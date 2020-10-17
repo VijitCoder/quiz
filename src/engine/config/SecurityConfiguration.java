@@ -27,8 +27,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .csrf().disable()
-            .authorizeRequests()
-            .anyRequest().authenticated()
+            // Why: if your browser does not open H2 console frames, just add a string below
+            .headers().frameOptions().disable()
+            .and().authorizeRequests().anyRequest().authenticated()
             .and().httpBasic()
             .and().sessionManagement().disable();
     }
@@ -39,8 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring()
-            .antMatchers(HttpMethod.POST, "/api/register")
-            .antMatchers(HttpMethod.POST, "/actuator/shutdown")
+            .antMatchers(HttpMethod.POST, "/api/register", "/actuator/shutdown")
             .antMatchers("/h2/**");
     }
 
