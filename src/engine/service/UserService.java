@@ -6,7 +6,8 @@ import engine.exception.NotUniqueValueException;
 import engine.repository.UserCrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-// import org.springframework.security.core.userdetails.User; DON'T use this import. "User" already occupied.
+// DON'T use this import. "User" is already occupied.
+// import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,7 +18,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @link https://habr.com/ru/company/otus/blog/488418/
+ * <a href="https://habr.com/ru/company/otus/blog/488418/">Аутентификация REST API с помощью Spring Security...</a>
  */
 @Component
 public class UserService implements UserDetailsService {
