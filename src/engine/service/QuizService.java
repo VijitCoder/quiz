@@ -7,6 +7,7 @@ import engine.exception.EntityNotFoundException;
 import engine.repository.QuizCrudRepository;
 import engine.repository.UserCrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -34,6 +35,17 @@ public class QuizService {
         // TODO Грубое решение. Вообще неочевидно, что в переданном DTO появится id созданной записи.
         //  Нужно как-то сделать иначе.
         dto.setId(quiz.getId());
+    }
+
+    public void deleteQuiz(int quizId, Principal principal) {
+        User user = getUserEntity(principal.getName());
+        Quiz quiz = getQuizEntity(quizId);
+
+        if (!user.equals(quiz.getAuthor())) {
+            throw new AccessDeniedException("Only quiz author can delete his quiz");
+        }
+
+        quizRepo.delete(quiz);
     }
 
     /**

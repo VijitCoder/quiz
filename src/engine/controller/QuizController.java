@@ -6,6 +6,7 @@ import engine.exception.EntityNotFoundException;
 import engine.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -54,6 +55,18 @@ public class QuizController {
             return service.getQuiz(id);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/quizzes/{id}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteQuiz(@PathVariable int id, Principal principal) {
+        try {
+            service.deleteQuiz(id, principal);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (AccessDeniedException e) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
         }
     }
 
