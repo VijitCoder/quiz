@@ -21,7 +21,8 @@ public class Quiz {
     @JsonProperty
     private String text;
 
-    @Size(min = 2)
+    @NotEmpty
+    @Size(min = 2, message="Need at least 2 options")
     @JsonProperty
     private String[] options;
 
