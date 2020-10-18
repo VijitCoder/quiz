@@ -1,7 +1,7 @@
 package engine.controller;
 
 import engine.dto.AnswerDto;
-import engine.entity.Quiz;
+import engine.dto.QuizDto;
 import engine.exception.EntityNotFoundException;
 import engine.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class QuizController {
      * Note: "principal" is an authorized user in notation of the Spring Security.
      */
     @PostMapping("/quizzes")
-    public Quiz createQuiz(@Valid @RequestBody Quiz quiz, Principal principal) {
+    public QuizDto createQuiz(@Valid @RequestBody QuizDto quiz, Principal principal) {
         service.storeQuiz(quiz, principal);
         return quiz;
     }
@@ -41,7 +41,7 @@ public class QuizController {
      * Get all available quizzes, without answers
      */
     @GetMapping("/quizzes")
-    public Iterable<Quiz> getAllQuizzes() {
+    public Iterable<QuizDto> getAllQuizzes() {
         return service.getAllQuizzes();
     }
 
@@ -49,11 +49,11 @@ public class QuizController {
      * Get one quiz by id
      */
     @GetMapping("/quizzes/{id}")
-    public Quiz getQuiz(@PathVariable int id) {
+    public QuizDto getQuiz(@PathVariable int id) {
         try {
             return service.getQuiz(id);
         } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Quiz not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 

@@ -1,5 +1,6 @@
 package engine.service;
 
+import engine.dto.QuizDto;
 import engine.entity.Quiz;
 import engine.entity.User;
 import engine.exception.EntityNotFoundException;
@@ -9,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class QuizService {
@@ -23,28 +26,34 @@ public class QuizService {
         this.userRepo = userRepo;
     }
 
-    public void storeQuiz(Quiz quiz, Principal principal) {
-        User user = this.userRepo
-            .findByEmail(principal.getName())
-            .orElseThrow(() -> new EntityNotFoundException("User not found in the DB"));
-        quiz.setAuthor(user);
+    public void storeQuiz(QuizDto dto, Principal principal) {
+        User user = getUserEntity(principal.getName());
+        Quiz quiz = new Quiz(dto).setAuthor(user);
         quizRepo.save(quiz);
+
+        // TODO Грубое решение. Вообще неочевидно, что в переданном DTO появится id созданной записи.
+        //  Нужно как-то сделать иначе.
+        dto.setId(quiz.getId());
     }
 
     /**
      * Get all available quizzes, without answers
      */
-    public Iterable<Quiz> getAllQuizzes() {
-        return quizRepo.findAll();
+    public List<QuizDto> getAllQuizzes() {
+        List<QuizDto> dtos = new ArrayList<>();
+        // TODO как-то это можно записать через цепочку вызовов со stream и foreach или типа того.
+        // Но я забыл, как именно. Нужно бы поискать и сократить весь метод.
+        for (Quiz quiz: quizRepo.findAll()) {
+            dtos.add(quiz.toPublicDto());
+        }
+        return dtos;
     }
 
     /**
      * Get one quiz by id
      */
-    public Quiz getQuiz(int id) {
-        return quizRepo
-            .findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Quiz not found"));
+    public QuizDto getQuiz(int id) {
+        return getQuizEntity(id).toPublicDto();
     }
 
     /**
@@ -52,7 +61,7 @@ public class QuizService {
      */
     public boolean checkAnswer(int id, int[] userAnswer) {
         userAnswer = castNullableToOrderedArray(userAnswer);
-        int[] correctAnswer = castNullableToOrderedArray(getQuiz(id).getAnswer());
+        int[] correctAnswer = castNullableToOrderedArray(getQuizEntity(id).getAnswer());
         return Arrays.equals(correctAnswer, userAnswer);
     }
 
@@ -62,5 +71,17 @@ public class QuizService {
         }
         Arrays.sort(arr);
         return arr;
+    }
+
+    private Quiz getQuizEntity(int id) {
+        return quizRepo
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Quiz not found by id=" + id));
+    }
+
+    private User getUserEntity(String email) {
+        return this.userRepo
+            .findByEmail(email)
+            .orElseThrow(() -> new EntityNotFoundException("User not found by email " + email));
     }
 }
