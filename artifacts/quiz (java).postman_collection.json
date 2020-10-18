@@ -1,0 +1,247 @@
+{
+	"info": {
+		"_postman_id": "98b92128-30a4-4584-8d98-7681b515a04c",
+		"name": "quiz (java)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "authorized",
+			"item": [
+				{
+					"name": "create quiz",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Coffee drinks\",\n  \"text\": \"Select only coffee drinks.\",\n  \"options\": [\"Americano\",\"Tea\",\"Cappuccino\",\"Sprite\"],\n  \"answer\": [0,2]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8889/api/quizzes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"quizzes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get a quiz",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8889/api/quizzes/29",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"quizzes",
+								"29"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete quiz",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8889/api/quizzes/31",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"quizzes",
+								"31"
+							]
+						},
+						"description": "A user can delete only the quiz that he posted."
+					},
+					"response": []
+				},
+				{
+					"name": "send an answer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"answer\": [2,0]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8889/api/quizzes/29/solve",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"quizzes",
+								"29",
+								"solve"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all quizzes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8889/api/quizzes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"quizzes"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "basic",
+				"basic": [
+					{
+						"key": "username",
+						"value": "test@gmail.com",
+						"type": "string"
+					},
+					{
+						"key": "password",
+						"value": "secret",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b7aab148-2ff6-4aa8-83f6-4706ec0ac13f",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "4b9e481b-b17f-4a74-96c8-6e5ce05e4fd9",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Auth test with actuator/shutdown",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8889/actuator/shutdown",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8889",
+					"path": [
+						"actuator",
+						"shutdown"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"test@gmail.com\",\n  \"password\": \"secret\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8889/api/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8889",
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "f5c520fc-3b11-49ec-9290-c87afb829c29",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "da01fc16-eec5-48bc-88c1-bbbdd0834724",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
