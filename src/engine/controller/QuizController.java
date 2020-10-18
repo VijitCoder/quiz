@@ -10,8 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.HashMap;
 
+/**
+ * How to get an authorized user, see <a href="https://www.baeldung.com/get-user-in-spring-security">there</a>.
+ */
 @RestController()
 @RequestMapping("/api")
 public class QuizController {
@@ -24,10 +28,12 @@ public class QuizController {
 
     /**
      * Add a quiz
+     *
+     * Note: "principal" is an authorized user in notation of the Spring Security.
      */
     @PostMapping("/quizzes")
-    public Quiz createQuiz(@Valid @RequestBody Quiz quiz) {
-        service.storeQuiz(quiz);
+    public Quiz createQuiz(@Valid @RequestBody Quiz quiz, Principal principal) {
+        service.storeQuiz(quiz, principal);
         return quiz;
     }
 
@@ -78,3 +84,4 @@ public class QuizController {
         return result;
     }
 }
+

@@ -36,4 +36,8 @@ public class Quiz {
     public int[] getAnswer() {
         return answer;
     }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
 }
