@@ -25,9 +25,6 @@ public class RegisterController {
 
     /**
      * Add a new user
-     *
-     * TODO Блядский Spring Security заменяет мое 400 Bad Request на 401ю. Я задолбался гуглить, как это исправить.
-     * Если тесты пройдут - болт положу на ситуацию.
      */
     @PostMapping("/register")
     public void createUser(@Valid @RequestBody UserDto user) {
