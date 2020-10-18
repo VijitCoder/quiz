@@ -1,11 +1,11 @@
 package engine.service;
 
+import engine.dto.UserDetailsDto;
 import engine.dto.UserDto;
 import engine.entity.User;
 import engine.exception.NotUniqueValueException;
 import engine.repository.UserCrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 // DON'T use this import. "User" is already occupied.
 // import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,16 +14,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
-import java.util.List;
-
-/**
- * <a href="https://habr.com/ru/company/otus/blog/488418/">Аутентификация REST API с помощью Spring Security...</a>
- */
 @Component
 public class UserService implements UserDetailsService {
-    private static final String USER_ROLE = "user";
-
     @Autowired
     private UserCrudRepository repo;
 
@@ -52,17 +44,18 @@ public class UserService implements UserDetailsService {
         return user != null;
     }
 
+    /**
+     * <a href="https://habr.com/ru/company/otus/blog/488418/">Аутентификация REST API с помощью Spring Security...</a>
+     * <a href="https://www.youtube.com/watch?v=TNt3GHuayXs">JetBrains: Spring Security + MySQL</a>
+     */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = repo.findByEmail(email);
 
         if (user == null) {
-            throw new UsernameNotFoundException("User not found");
+            throw new UsernameNotFoundException("User not found by " + email);
         }
 
-        List<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(USER_ROLE));
-
-        return new org.springframework.security.core.userdetails
-            .User(user.getEmail(), user.getPassword(), authorities);
+        return new UserDetailsDto(user);
     }
 }
