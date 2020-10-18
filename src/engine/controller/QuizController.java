@@ -82,7 +82,7 @@ public class QuizController {
         try {
             isCorrect = service.checkAnswer(id, answer.getAnswer());
         } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Quiz not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
 
         HashMap<String, Object> result = new HashMap<>();
