@@ -1,6 +1,7 @@
 package engine.controller;
 
 import engine.dto.AnswerDto;
+import engine.dto.CompletedSolutionDto;
 import engine.dto.QuizDto;
 import engine.exception.EntityNotFoundException;
 import engine.service.QuizService;
@@ -55,6 +56,23 @@ public class QuizController {
     }
 
     /**
+     * Get all quizzes (paginated), completed by authorized user
+     */
+    @GetMapping("/quizzes/completed")
+    public Iterable<CompletedSolutionDto> getCompletedSolutions(
+        @RequestParam(defaultValue = "0") Integer pageNo,
+        Principal principal
+    ) {
+        // Sorting here - that is bad. But it's all because in the Spring messed up pagination (which is directly
+        // relates to representation layer but not to DB) and sorting by entity fields (which is directly related
+        // to DB, but can by weakly related to representation layer).
+        // And there is no normal way to setup sorting later, deeper in the app layers.
+        Pageable paging = PageRequest.of(pageNo, QUIZZES_PER_PAGE, Sort.by("createdAt").descending());
+
+        return service.getCompletedSolutions(paging, principal);
+    }
+
+    /**
      * Get one quiz by id
      */
     @GetMapping("/quizzes/{id}")
@@ -87,11 +105,12 @@ public class QuizController {
     @PostMapping("/quizzes/{id}/solve")
     public HashMap<String, Object> checkAnswer(
         @PathVariable int id,
-        @RequestBody AnswerDto answer
+        @RequestBody AnswerDto answer,
+        Principal principal
     ) {
         boolean isCorrect;
         try {
-            isCorrect = service.checkAnswer(id, answer.getAnswer());
+            isCorrect = service.checkAnswer(id, answer.getAnswer(), principal);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
