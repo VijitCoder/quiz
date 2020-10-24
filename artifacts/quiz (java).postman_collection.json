@@ -59,28 +59,6 @@
 					"response": []
 				},
 				{
-					"name": "delete quiz",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8889/api/quizzes/31",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8889",
-							"path": [
-								"api",
-								"quizzes",
-								"31"
-							]
-						},
-						"description": "A user can delete only the quiz that he posted."
-					},
-					"response": []
-				},
-				{
 					"name": "send an answer",
 					"request": {
 						"method": "POST",
@@ -126,6 +104,62 @@
 							"path": [
 								"api",
 								"quizzes"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete quiz",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8889/api/quizzes/31",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"quizzes",
+								"31"
+							]
+						},
+						"description": "A user can delete only the quiz that he posted."
+					},
+					"response": []
+				},
+				{
+					"name": "get completed quizzes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8889/api/quizzes/completed?page=0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8889",
+							"path": [
+								"api",
+								"quizzes",
+								"completed"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								}
 							]
 						}
 					},
