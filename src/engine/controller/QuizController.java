@@ -5,6 +5,9 @@ import engine.dto.QuizDto;
 import engine.exception.EntityNotFoundException;
 import engine.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +23,8 @@ import java.util.HashMap;
 @RestController()
 @RequestMapping("/api")
 public class QuizController {
+    private static final int QUIZZES_PER_PAGE = 10;
+
     private final QuizService service;
 
     @Autowired
@@ -29,7 +34,7 @@ public class QuizController {
 
     /**
      * Add a quiz
-     *
+     * <br>
      * Note: "principal" is an authorized user in notation of the Spring Security.
      */
     @PostMapping("/quizzes")
@@ -39,11 +44,14 @@ public class QuizController {
     }
 
     /**
-     * Get all available quizzes, without answers
+     * Get all available quizzes (paginated), without answers
+     * <br>
+     * Note: according the task we support only page num from the user request. Therefore the page size is hardcoded.
      */
     @GetMapping("/quizzes")
-    public Iterable<QuizDto> getAllQuizzes() {
-        return service.getAllQuizzes();
+    public Iterable<QuizDto> getAllQuizzes(@RequestParam(defaultValue = "0") Integer pageNo) {
+        Pageable paging = PageRequest.of(pageNo, QUIZZES_PER_PAGE);
+        return service.getAllQuizzes(paging);
     }
 
     /**
@@ -58,6 +66,9 @@ public class QuizController {
         }
     }
 
+    /**
+     * Delete the quiz. Only its author can do that.
+     */
     @DeleteMapping("/quizzes/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteQuiz(@PathVariable int id, Principal principal) {
