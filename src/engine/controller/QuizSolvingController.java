@@ -60,14 +60,14 @@ public class QuizSolvingController {
      */
     @GetMapping("/quizzes/completed")
     public Iterable<CompletedSolutionDto> getCompletedSolutions(
-        @RequestParam(defaultValue = "0") Integer pageNo,
+        @RequestParam(defaultValue = "0") Integer page,
         Principal principal
     ) {
         // Sorting here - that is bad. But it's all because in the Spring messed up pagination (which is directly
         // relates to representation layer but not to DB) and sorting by entity fields (which is directly related
         // to DB, but can by weakly related to representation layer).
         // And there is no normal way to setup sorting later, deeper in the app layers.
-        Pageable paging = PageRequest.of(pageNo, QUIZZES_PER_PAGE, Sort.by("createdAt").descending());
+        Pageable paging = PageRequest.of(page, QUIZZES_PER_PAGE, Sort.by("createdAt").descending());
 
         return service.getCompletedSolutions(paging, principal);
     }

@@ -44,8 +44,8 @@ public class QuizCrudController {
      * Note: according the task we support only page num from the user request. Therefore the page size is hardcoded.
      */
     @GetMapping("/quizzes")
-    public Iterable<QuizDto> getAllQuizzes(@RequestParam(defaultValue = "0") Integer pageNo) {
-        Pageable paging = PageRequest.of(pageNo, QUIZZES_PER_PAGE);
+    public Iterable<QuizDto> getAllQuizzes(@RequestParam(defaultValue = "0") Integer page) {
+        Pageable paging = PageRequest.of(page, QUIZZES_PER_PAGE);
         return service.getAllQuizzes(paging);
     }
 
