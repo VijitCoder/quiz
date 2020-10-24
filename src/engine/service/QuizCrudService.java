@@ -3,8 +3,8 @@ package engine.service;
 import engine.dto.QuizDto;
 import engine.entity.Quiz;
 import engine.entity.User;
-import engine.repository.QuizCrudRepository;
-import engine.repository.UserCrudRepository;
+import engine.repository.QuizRepository;
+import engine.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -23,8 +23,8 @@ import java.util.List;
 public class QuizCrudService extends QuizService {
     @Autowired
     public QuizCrudService(
-        QuizCrudRepository quizRepo,
-        UserCrudRepository userRepo
+        QuizRepository quizRepo,
+        UserRepository userRepo
     ) {
         super(quizRepo, userRepo);
     }

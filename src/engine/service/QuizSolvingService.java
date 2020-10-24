@@ -4,9 +4,9 @@ import engine.dto.CompletedSolutionDto;
 import engine.entity.Quiz;
 import engine.entity.SolutionStatistics;
 import engine.entity.User;
-import engine.repository.QuizCrudRepository;
-import engine.repository.SolutionStatCrudRepository;
-import engine.repository.UserCrudRepository;
+import engine.repository.QuizRepository;
+import engine.repository.SolutionStatRepository;
+import engine.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -24,13 +24,13 @@ import java.util.List;
  */
 @Service
 public class QuizSolvingService extends QuizService {
-    private final SolutionStatCrudRepository solutionStatRepo;
+    private final SolutionStatRepository solutionStatRepo;
 
     @Autowired
     public QuizSolvingService(
-        QuizCrudRepository quizRepo,
-        UserCrudRepository userRepo,
-        SolutionStatCrudRepository solutionStatRepo
+        QuizRepository quizRepo,
+        UserRepository userRepo,
+        SolutionStatRepository solutionStatRepo
     ) {
         super(quizRepo, userRepo);
         this.solutionStatRepo = solutionStatRepo;

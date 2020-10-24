@@ -3,9 +3,8 @@ package engine.service;
 import engine.dto.UserDetailsDto;
 import engine.dto.UserDto;
 import engine.entity.User;
-import engine.exception.EntityNotFoundException;
 import engine.exception.NotUniqueValueException;
-import engine.repository.UserCrudRepository;
+import engine.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 // DON'T use this import. "User" is already occupied.
 // import org.springframework.security.core.userdetails.User;
@@ -18,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserService implements UserDetailsService {
     @Autowired
-    private UserCrudRepository repo;
+    private UserRepository repo;
 
     @Autowired
     PasswordEncoder passwordEncoder;

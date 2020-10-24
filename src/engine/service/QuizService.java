@@ -3,19 +3,19 @@ package engine.service;
 import engine.entity.Quiz;
 import engine.entity.User;
 import engine.exception.EntityNotFoundException;
-import engine.repository.QuizCrudRepository;
-import engine.repository.UserCrudRepository;
+import engine.repository.QuizRepository;
+import engine.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 abstract public class QuizService {
-    protected final QuizCrudRepository quizRepo;
+    protected final QuizRepository quizRepo;
 
-    protected final UserCrudRepository userRepo;
+    protected final UserRepository userRepo;
 
     public QuizService(
-        QuizCrudRepository quizRepo,
-        UserCrudRepository userRepo
+        QuizRepository quizRepo,
+        UserRepository userRepo
     ) {
         this.quizRepo = quizRepo;
         this.userRepo = userRepo;
