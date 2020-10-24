@@ -10,6 +10,11 @@ public class SolutionStatistics {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    /**
+     * DON'T USE CascadeType.REMOVE or ALL. It's doesn't work and it is dangerous (if you compel it to work)
+     * <br>
+     * <a href="https://thorben-janssen.com/avoid-cascadetype-delete-many-assocations"/>proof</a>
+     */
     @ManyToOne
     @JoinColumn(name = "quiz_id", nullable = false)
     private Quiz quiz;

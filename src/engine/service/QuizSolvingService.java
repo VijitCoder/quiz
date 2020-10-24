@@ -87,4 +87,12 @@ public class QuizSolvingService extends QuizService {
         Arrays.sort(arr);
         return arr;
     }
+
+    public void deleteRelatedStats(Quiz quiz) {
+        solutionStatRepo.deleteStatsForQuiz(quiz);
+    }
+
+    public void deleteRelatedStats(User user) {
+        solutionStatRepo.deleteStatsForUser(user);
+    }
 }

@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -21,12 +22,16 @@ import java.util.List;
  */
 @Service
 public class QuizCrudService extends QuizService {
+    private final QuizSolvingService solvingService;
+
     @Autowired
     public QuizCrudService(
         QuizRepository quizRepo,
-        UserRepository userRepo
+        UserRepository userRepo,
+        QuizSolvingService solvingService
     ) {
         super(quizRepo, userRepo);
+        this.solvingService = solvingService;
     }
 
     public void storeQuiz(QuizDto dto, Principal principal) {
@@ -46,6 +51,13 @@ public class QuizCrudService extends QuizService {
         return getQuizEntity(id).toPublicDto();
     }
 
+    /**
+     * Delete the quiz together with related statistics.
+     * <br>
+     * Why not to use ORM relation and cascade deletion,
+     * see <a href="https://thorben-janssen.com/avoid-cascadetype-delete-many-assocations"/>there</a>.
+     */
+    @Transactional
     public void deleteQuiz(int quizId, Principal principal) {
         User user = getUserEntity(principal.getName());
         Quiz quiz = getQuizEntity(quizId);
@@ -54,6 +66,7 @@ public class QuizCrudService extends QuizService {
             throw new AccessDeniedException("Only quiz author can delete his quiz");
         }
 
+        solvingService.deleteRelatedStats(quiz);
         quizRepo.delete(quiz);
     }
 
